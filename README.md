@@ -1,6 +1,6 @@
 # Nome do projeto
 
-<img src="" alt="Exemplo imagem">
+<img src="teste-facilita.png" alt="Exemplo imagem">
 
 > Olá nesse projeto temos como objetivo demonstrar conhecimentos de desenvolvimento em NodeJs e Reactjs, 
   o sistema consiste em um CRUD de usuário em que é possível definir posições de localização e disponibilizar uma listagem de clientes baseado na ordem de distância entre os clientes.
