@@ -34,9 +34,32 @@ const removeLocationByCustomerId = (req, res) => {
     });
 }
 
+const getDeliveryOrder = (req, res) => {
+    pool.query(queries.getLocations, (error, results) => {
+
+        const arr = [];
+        let clientDelivery = {name: "", telephone: "", coordinatex: "", coordinatey: "", distance: ""};
+        results.rows.forEach(element => {
+            let distance = Math.hypot(element.coordinatex, element.coordinatey)
+            clientDelivery = {
+                name: element.name,
+                telephone: element.telephone,
+                coordinatex: element.coordinatex,
+                coordinatey: element.coordinatey,
+                distance: distance.toFixed(2)
+            }
+            arr.push(clientDelivery)
+        });
+        arr.sort((a, b) => a.distance - b.distance);
+        if (error) throw error;
+        res.status(200).json(arr)
+    });
+}
+
 module.exports = {
     createLocation,
     getLocationByCustomerId,
     updateLocationByCustomerId,
     removeLocationByCustomerId,
+    getDeliveryOrder,
 };

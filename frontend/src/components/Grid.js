@@ -1,43 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import { FaTrash, FaEdit, FaMap } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { Thead, Tr, Th, Tbody, Td, Table } from "../styles/global.js";
 
-const Table = styled.table`
-    width: 100%;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0px 0px 5px #accc;
-    border-radius: 5px;
-    max-width: 800px;
-    margin: 20px auto;
-    word-break: break-all;
-`;
+const Grid = ( { users, setUsers, setOnEdit, isOpen, setisOpen, setUserId }) => {
 
-export const Tbody = styled.tbody``;
-
-export const Thead = styled.thead``;
-
-export const Tr = styled.tr``;
-
-export const Th = styled.th`
-    text-align: start;
-    border-bottom: inset;
-    padding-bottom: 5px;
-
-    @media (max-width: 500px) {
-        ${(props) => props.onlyWeb && "display: none"}
-    }
-`;
-
-export const Td = styled.td`
-    padding-top: 15px;
-    text-align: ${(props) => (props.alignCenter ? "center": "start")};
-    width: ${(props) => (props.width ? props.width : "auto")};
-`;
-
-const Grid = ( { users, setUsers, SetOnEdit }) => {
+    const handleEdit = (item) => {
+        setOnEdit(item);
+      };
 
     const handleDelete = async (id) => {
         await axios.delete("http://localhost:3000/api/v1/customers/" + id)
@@ -49,12 +21,13 @@ const Grid = ( { users, setUsers, SetOnEdit }) => {
         })
         .catch(({ data }) => toast.error(data));
 
-        SetOnEdit(null);
+        setOnEdit(null);
     };
 
-    const handleEdit = (item) => {
-        SetOnEdit(item);
-    };
+    const handleLocation = (id) => {
+        setUserId(id);
+        setisOpen(true);
+    }
 
     return (
         <Table>
@@ -62,7 +35,7 @@ const Grid = ( { users, setUsers, SetOnEdit }) => {
                 <Tr>
                     <Th>Nome</Th>
                     <Th>email</Th>
-                    <Th onlyWeb>Telefone</Th>
+                    <Th>Telefone</Th>
                     <Th></Th>
                     <Th></Th>
                 </Tr>
@@ -72,12 +45,15 @@ const Grid = ( { users, setUsers, SetOnEdit }) => {
                     <Tr key={i}>
                         <Td width="30%">{item.name}</Td>
                         <Td width="30%">{item.email}</Td>
-                        <Td width="30%" onlyWeb>{item.telephone}</Td>
+                        <Td width="30%">{item.telephone}</Td>
                         <Td alignCenter width="5%">
                             <FaEdit onClick={() => handleEdit(item)}/>
                         </Td>
                         <Td alignCenter width="5%">
                             <FaTrash onClick={() => handleDelete(item.id)}/>
+                        </Td>
+                        <Td alignCenter width="5%">
+                            <FaMap onClick={() => handleLocation(item.id)}/>
                         </Td>
                     </Tr>
                 ))}

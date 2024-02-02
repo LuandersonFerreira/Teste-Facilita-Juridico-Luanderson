@@ -7,6 +7,7 @@ router.post("/", controller.createLocation)
 router.get("/:id", controller.getLocationByCustomerId);
 router.put("/", controller.updateLocationByCustomerId);
 router.delete("/:id", controller.removeLocationByCustomerId);
+router.get("/", controller.getDeliveryOrder);
 
 
 module.exports = router;
