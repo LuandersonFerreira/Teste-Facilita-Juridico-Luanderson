@@ -41,6 +41,15 @@ const ModalLocation = ({ isOpen, setisOpen, userId})  => {
         if (!coordinates.coordinatex.value || !coordinates.coordinatey.value) {
             return toast.warn("Preencha todos os campos!")
         }
+        const alreadyexists = await axios.get(`http://localhost:3000/api/v1/delivery/${userId}`)
+        if (!alreadyexists){
+            await axios.put("http://localhost:3000/api/v1/delivery", {
+                customerId: userId,
+                coordinateX: coordinates.coordinatex.value,
+                coordinateY: coordinates.coordinatey.value 
+            }).then(({ data }) => toast.success(data))
+            .catch(({ data }) => toast.error(data));
+        } else {
             await axios.post("http://localhost:3000/api/v1/delivery", {
                 customerId: userId,
                 coordinateX: coordinates.coordinatex.value,
@@ -48,6 +57,7 @@ const ModalLocation = ({ isOpen, setisOpen, userId})  => {
             }).then(({ data }) => toast.success(data))
             .catch(({ data }) => toast.error(data));
         }
+    }
 
     useEffect(()=> {
         const getCoordinates = async ()=> {

@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import axios from "axios";
 import { FaTrash, FaEdit, FaMap } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -22,7 +21,14 @@ const Grid = ( { users, setUsers, setOnEdit, isOpen, setisOpen, setUserId }) => 
         .catch(({ data }) => toast.error(data));
 
         setOnEdit(null);
+        deleteLocation(id);
     };
+
+    const deleteLocation = async (id) => {
+        await axios.delete(`http://localhost:3000/api/v1/delivery/${id}`)
+        .then(({ data }) => toast.success(data))
+        .catch(({ data }) => toast.error(data));
+    }
 
     const handleLocation = (id) => {
         setUserId(id);
